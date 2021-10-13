@@ -100,6 +100,7 @@ type Claims struct {
 	Address       string                 `json:"addr,omitempty" xml:"addr,omitempty" yaml:"addr,omitempty"`
 	PictureURL    string                 `json:"picture,omitempty" xml:"picture,omitempty" yaml:"picture,omitempty"`
 	Metadata      map[string]interface{} `json:"metadata,omitempty" xml:"metadata,omitempty" yaml:"metadata,omitempty"`
+	Username      string		     `json:"username,omitempty" xml:"username,omitempty" yaml:"username,omitempty"`
 }
 
 // AccessListClaim represents custom acl/paths claim
@@ -665,6 +666,16 @@ func NewUser(data interface{}) (*User, error) {
 			return nil, errors.ErrInvalidMetadataClaimType.WithArgs(m["metadata"])
 		}
 		mkv["metadata"] = c.Metadata
+	}
+	
+	if _, exists := m["username"]; exists {
+		switch m["username"].(type) {
+		case string:
+			c.Username = m["username"].(string)
+		default:
+			return nil, errors.ErrInvalidMetadataClaimType.WithArgs(m["username"])
+		}
+		mkv["username"] = c.Username
 	}
 
 	if len(c.Roles) == 0 {
