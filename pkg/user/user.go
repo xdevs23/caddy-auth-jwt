@@ -17,10 +17,11 @@ package user
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/greenpau/caddy-authorize/pkg/errors"
-	"github.com/greenpau/caddy-authorize/pkg/utils/cfgutils"
 	"strings"
 	"time"
+
+	"github.com/greenpau/caddy-authorize/pkg/errors"
+	"github.com/greenpau/caddy-authorize/pkg/utils/cfgutils"
 )
 
 /*
@@ -100,6 +101,7 @@ type Claims struct {
 	Address       string                 `json:"addr,omitempty" xml:"addr,omitempty" yaml:"addr,omitempty"`
 	PictureURL    string                 `json:"picture,omitempty" xml:"picture,omitempty" yaml:"picture,omitempty"`
 	Metadata      map[string]interface{} `json:"metadata,omitempty" xml:"metadata,omitempty" yaml:"metadata,omitempty"`
+	Username      string                 `json:"username,omitempty" xml:"username,omitempty" yaml:"username,omitempty"`
 }
 
 // AccessListClaim represents custom acl/paths claim
@@ -187,7 +189,7 @@ func (u *User) AsMap() map[string]interface{} {
 	return u.mkv
 }
 
-// GetData return user claim felds and their values for the evaluation by an ACL.
+// GetData return user claim fields and their values for the evaluation by an ACL.
 func (u *User) GetData() map[string]interface{} {
 	return u.tkv
 }
@@ -224,7 +226,7 @@ func (u *User) HasRole(roles ...string) bool {
 	return false
 }
 
-// HasRoles checks whether a user has all of the provided roles.
+// HasRoles checks whether a user has all the provided roles.
 func (u *User) HasRoles(roles ...string) bool {
 	for _, role := range roles {
 		if _, exists := u.rkv[role]; !exists {
@@ -665,6 +667,16 @@ func NewUser(data interface{}) (*User, error) {
 			return nil, errors.ErrInvalidMetadataClaimType.WithArgs(m["metadata"])
 		}
 		mkv["metadata"] = c.Metadata
+	}
+
+	if _, exists := m["username"]; exists {
+		switch m["username"].(type) {
+		case string:
+			c.Username = m["username"].(string)
+		default:
+			return nil, errors.ErrInvalidMetadataClaimType.WithArgs(m["username"])
+		}
+		mkv["username"] = c.Username
 	}
 
 	if len(c.Roles) == 0 {
