@@ -26,19 +26,20 @@ type fieldMatchStrategy int
 
 var (
 	inputDataTypes = map[string]dataType{
-		"roles":  dataTypeListStr,
-		"email":  dataTypeStr,
-		"origin": dataTypeStr,
-		"name":   dataTypeStr,
-		"aud":    dataTypeListStr,
-		"scopes": dataTypeListStr,
-		"org":    dataTypeListStr,
-		"jti":    dataTypeStr,
-		"iss":    dataTypeStr,
-		"sub":    dataTypeStr,
-		"addr":   dataTypeStr,
-		"method": dataTypeStr,
-		"path":   dataTypeStr,
+		"roles":    dataTypeListStr,
+		"email":    dataTypeStr,
+		"origin":   dataTypeStr,
+		"name":     dataTypeStr,
+		"aud":      dataTypeListStr,
+		"scopes":   dataTypeListStr,
+		"org":      dataTypeListStr,
+		"jti":      dataTypeStr,
+		"iss":      dataTypeStr,
+		"sub":      dataTypeStr,
+		"addr":     dataTypeStr,
+		"method":   dataTypeStr,
+		"path":     dataTypeStr,
+		"username": dataTypeStr,
 	}
 
 	inputDataAliases = map[string]string{
