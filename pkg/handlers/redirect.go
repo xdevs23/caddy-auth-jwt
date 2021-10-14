@@ -22,7 +22,7 @@ import (
 	"strings"
 )
 
-// HandleHeaderRedirect redirct the requests to configured auth URL by setting Location header and sending 302.
+// HandleHeaderRedirect redirects the requests to configured auth URL by setting Location header and sending 302.
 func HandleHeaderRedirect(w http.ResponseWriter, r *http.Request, opts map[string]interface{}) {
 	authURLPath, sep, redirectParameter, redirectURL, redirect := redirectParameters(w, r, opts)
 	if !redirect {
